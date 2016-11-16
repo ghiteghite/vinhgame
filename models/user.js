@@ -39,26 +39,28 @@ userSchema.methods.checkPassword = function (password) {
   return bcrypt.compareSync(password, this.hashPassword);
 };
 
-userSchema.statics.isUserExists = function (usernameOrEmail, callback) {
-  User.findOne({ username: usernameOrEmail, email: usernameOrEmail }, function (error, user) {
-    user ? callback(true) : callback(false);
+userSchema.statics.isUserExists = function (usernameOrEmail, done) {
+  User.findByUsernameOrEmail(usernameOrEmail, function (error, user) {
+    return user ? done(true) : done(false);
   });
 };
 
-userSchema.methods.authenticate = function (usernameOrEmail, password, done) {
-  User.findOne({ username: usernameOrEmail, email: usernameOrEmail }, function (error, user) {
-    if (error) {
-      // username or email does not exists
-    }
+userSchema.statics.authenticate = function (usernameOrEmail, password, done) {
+  User.findByUsernameOrEmail(usernameOrEmail, function (error, user) {
+    return (user && user.checkPassword(password)) ? done(null, user) : done(error);
+  });
+};
 
-    var isExists = user.checkPassword(password);
-    if (isExists) {
-      // set token
-      // res
-    }
-    else {
-      // password does not exists
-    }
+userSchema.statics.findByUsernameOrEmail = function (usernameOrEmail, done) {
+  var credentials = {
+    $or: [
+      { username: usernameOrEmail },
+      { email: usernameOrEmail }
+    ]
+  };
+
+  User.findOne(credentials, function (error, user) {
+    done(error, user);
   });
 };
 
