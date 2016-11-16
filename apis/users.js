@@ -20,12 +20,12 @@ var Users = {
     User.authenticate(user.usernameOrEmail, user.password, function (error, data) {
       if (error) {
         return res.status(500).json(
-          ResContent(false, '', '', null);
+          ResContent(false, '', '', null)
         );
       }
       else {
         return res.json(
-          ResContent(true, 'Authenticate success', null, data);
+          ResContent(true, 'Authenticate success', null, data)
         );
       }
     });
@@ -45,7 +45,7 @@ var Users = {
     var errors = req.validationErrors();
     if (errors) {
       return res.status(500).json(
-        ResContent(false, 'Validation failed', errors, null);
+        ResContent(false, 'Validation failed', errors, null)
       );
     }
 
@@ -54,11 +54,11 @@ var Users = {
     newUser.save(function (error) {
       if (error) {
         return res.status(500).json(
-          ResContent(false, 'User save failed', error, null);
+          ResContent(false, 'User save failed', error, null)
         );
       }
       return res.json(
-        ResContent(true, 'User created', null, null);
+        ResContent(true, 'User created', null, null)
       );
     });
   },
