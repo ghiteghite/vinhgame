@@ -20,7 +20,7 @@ var Users = {
     User.authenticate(user.usernameOrEmail, user.password, function (error, data) {
       if (error) {
         return res.status(500).json(
-          ResContent(false, '', '', null)
+          ResContent(false, 'xxx msg', 'xxx', null)
         );
       }
       else {
