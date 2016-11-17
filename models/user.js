@@ -51,9 +51,10 @@ userSchema.statics.authenticate = function (usernameOrEmail, password, done) {
       return done('error', null);
     }
     if (user && user.checkPassword(password)) {
-      delete user.saltPassword;
-      delete user.hashPassword;
-      return done(null, user);
+      var userWithoutPassword = user;
+      delete userWithoutPassword.saltPassword;
+      delete userWithoutPassword.hashPassword;
+      return done(null, userWithoutPassword);
     }
     else {
       return done('error', null);
